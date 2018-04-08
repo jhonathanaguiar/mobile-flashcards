@@ -1,5 +1,5 @@
-import {Platform, StyleSheet} from 'react-native'
-import {darkRed, lightRed, purple, white} from './colors'
+import { Platform, StyleSheet } from 'react-native'
+import { darkRed, lightRed, purple, white } from './colors'
 
 export const CommonStyles = StyleSheet.create({
   container: {

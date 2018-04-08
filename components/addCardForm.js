@@ -1,9 +1,9 @@
 import React, { Component } from 'react'
-import { View, Text, TextInput, TouchableOpacity, KeyboardAvoidingView } from 'react-native'
-import {CommonStyles} from '../utils/styles'
+import { Text, TextInput, TouchableOpacity, KeyboardAvoidingView } from 'react-native'
+import { CommonStyles } from '../utils/styles'
 import { connect } from 'react-redux'
-import {addCardToDeck} from '../utils/api'
-import {addCardRedux} from '../actions'
+import { addCardToDeck } from '../utils/api'
+import { addCardRedux } from '../actions'
 
 class AddCardForm extends Component {
 

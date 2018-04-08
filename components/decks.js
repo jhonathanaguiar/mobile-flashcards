@@ -1,10 +1,10 @@
 import React, { Component } from 'react'
 import { StyleSheet, View, Text, Platform, TouchableOpacity, FlatList } from 'react-native'
-import {gray, purple, white} from '../utils/colors'
-import { getDecks, clean } from '../utils/api'
+import { gray } from '../utils/colors'
+import { getDecks } from '../utils/api'
 import { connect } from 'react-redux'
 import { getDecksRedux } from '../actions'
-import {CommonStyles} from '../utils/styles'
+import { CommonStyles } from '../utils/styles'
 
 class Decks extends Component {
 
@@ -13,7 +13,7 @@ class Decks extends Component {
   componentDidMount() {
     getDecks()
       .then((decks) =>{
-        this.props.updateDecks(JSON.parse(decks))
+        if(decks !== null) this.props.updateDecks(JSON.parse(decks))
       })
 
   }

@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
-import {View, Text, TouchableOpacity, StyleSheet, Platform} from 'react-native'
-import {gray, white, red, green} from '../utils/colors'
+import { View, Text, TouchableOpacity, StyleSheet } from 'react-native'
+import { gray, white, red, green } from '../utils/colors'
 import { connect } from 'react-redux'
-import {CommonStyles} from '../utils/styles'
+import { CommonStyles } from '../utils/styles'
 
 class Quiz extends Component {
     state = {
