@@ -5,6 +5,7 @@ import { getDecks } from '../utils/api'
 import { connect } from 'react-redux'
 import { getDecksRedux } from '../actions'
 import { CommonStyles } from '../utils/styles'
+import { setLocalNotification } from '../utils/helpers'
 
 class Decks extends Component {
 
@@ -13,9 +14,9 @@ class Decks extends Component {
   componentDidMount() {
     getDecks()
       .then((decks) =>{
-        if(decks !== null) this.props.updateDecks(JSON.parse(decks))
+        if(decks !== null) this.props.updateDecks(decks)
       })
-
+    setLocalNotification()
   }
 
   renderCard = (deckName) => {

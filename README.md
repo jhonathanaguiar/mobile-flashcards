@@ -12,3 +12,7 @@ yarn install
 ```
 yarn start
 ```
+
+## Sistemas testados
+* Android 6.0
+* iOS 11.3

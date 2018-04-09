@@ -1,16 +1,10 @@
 import { AsyncStorage } from 'react-native'
 
 const STORAGE_KEY = "MobileFlashCards:decks"
+const QUIZ_KEY = "MobileFlashCards:quiz"
 
 export function getDecks() {
-  return AsyncStorage.getItem(STORAGE_KEY)
-}
-
-export function getDeck(title) {
-  return AsyncStorage.getItem(STORAGE_KEY)
-    .then((decks) => {
-      return decks[title]
-  })
+  return AsyncStorage.getItem(STORAGE_KEY).then((decks) => JSON.parse(decks))
 }
 
 export function saveDeckTitle(title) {
@@ -31,6 +25,34 @@ export function addCardToDeck(card, deckTitle) {
     })
 }
 
-export function clean() {
-  return AsyncStorage.clear()
+export function getQuizState(deckName) {
+  return AsyncStorage.getItem(QUIZ_KEY)
+    .then((results) => {
+      const data = JSON.parse(results)
+      if(data) {
+        return data[deckName]
+      } else {
+        return {}
+      }
+      }
+    )
+}
+
+export function saveQuizState(deckName, state) {
+  delete state.questionQtd
+  return AsyncStorage.mergeItem(QUIZ_KEY, JSON.stringify({
+    [deckName]: {
+      ...state
+    }
+  })).then(()=> state)
+}
+
+export function deleteQuizState(deckName) {
+  return AsyncStorage.getItem(QUIZ_KEY)
+    .then((results) => {
+      const data = JSON.parse(results)
+      data[deckName] = undefined
+      delete data[deckName]
+      AsyncStorage.setItem(QUIZ_KEY, JSON.stringify(data))
+    })
 }

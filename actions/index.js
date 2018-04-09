@@ -1,7 +1,9 @@
 export const ADD_CARD = 'ADD_CARD'
 export const ADD_DECK = 'ADD_DECK'
-export const GET_CARDS = 'GET_CARDS'
 export const GET_DECKS = 'GET_DECKS'
+export const GET_CARDS = 'GET_CARDS'
+export const SAVE_QUIZ = 'SAVE_QUIZ'
+export const DELETE_QUIZ = 'DELETE_QUIZ'
 
 export function addCardRedux (card, deckTitle) {
   return {
@@ -18,17 +20,24 @@ export function addDeckRedux (deckTitle) {
   }
 }
 
-export function getCardsRedux (deckTitle, cards) {
-  return {
-    type: GET_CARDS,
-    deckTitle,
-    cards,
-  }
-}
-
 export function getDecksRedux (decks) {
   return {
     type: GET_DECKS,
     decks,
+  }
+}
+
+export function saveQuizStateRedux (deckTitle, oldState) {
+  return {
+    type: SAVE_QUIZ,
+    deckTitle,
+    oldState
+  }
+}
+
+export function deleteQuizStateRedux (deckTitle) {
+  return {
+    type: DELETE_QUIZ,
+    deckTitle,
   }
 }

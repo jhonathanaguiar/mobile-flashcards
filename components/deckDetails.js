@@ -3,6 +3,8 @@ import { View, Text, TouchableOpacity, StyleSheet } from 'react-native'
 import { CommonStyles } from '../utils/styles'
 import { connect } from 'react-redux'
 import { gray, blue, white, green } from '../utils/colors'
+import { clearLocalNotification, setLocalNotification } from '../utils/helpers'
+import { hasQuizToContinueApi } from '../utils/api'
 
 class DeckDetails extends Component {
   static navigationOptions = () => {
@@ -11,7 +13,7 @@ class DeckDetails extends Component {
     }
   }
   render(){
-    const { title, deck } = this.props
+    const { title, deck, hasQuizToContinue } = this.props
     return(
       <View style={CommonStyles.container}>
         <Text style={componentStyle.title}>{title}</Text>
@@ -22,12 +24,22 @@ class DeckDetails extends Component {
         >
           <Text style={componentStyle.btnLabel}>Add Card</Text>
         </TouchableOpacity>
-        <TouchableOpacity
-          style={[componentStyle.btn, {backgroundColor: green}]}
-          onPress={() => this.props.goToQuiz(title)}
-        >
-          {!!deck.questions.length && <Text style={componentStyle.btnLabel}>Start Quiz</Text>}
-        </TouchableOpacity>
+        {!!deck.questions.length &&
+          <TouchableOpacity
+            style={[componentStyle.btn, {backgroundColor: green}]}
+            onPress={() => this.props.goToQuiz(title, false)}
+          >
+            <Text style={componentStyle.btnLabel}>Start New Quiz</Text>
+          </TouchableOpacity>
+        }
+        {!!hasQuizToContinue &&
+          <TouchableOpacity
+            style={[componentStyle.btn, {backgroundColor: blue}]}
+            onPress={() => this.props.goToQuiz(title, true)}
+          >
+            <Text style={componentStyle.btnLabel}>Continue Quiz</Text>
+          </TouchableOpacity>
+        }
       </View>
     )
   }
@@ -35,10 +47,13 @@ class DeckDetails extends Component {
 
 function mapStateToProps (state, { navigation }) {
   const { title } = navigation.state.params
+  const deck = state[title]
+  const hasQuizToContinue = deck.hasOwnProperty('oldState') ? (deck.oldState.currentCount !== 0 && !deck.oldState.showResults) : false
 
   return {
-    deck: state[title],
-    title
+    deck,
+    title,
+    hasQuizToContinue
   }
 }
 
@@ -46,7 +61,11 @@ function mapDispatchToProps (dispatch, { navigation }){
   return {
     goBack: () => navigation.goBack(),
     goToAddCard: (deckTitle) => navigation.navigate('AddCard', {deckTitle: deckTitle}),
-    goToQuiz: (deckTitle) => navigation.navigate('Quiz', {deckTitle: deckTitle})
+    goToQuiz: (deckTitle, continueQuiz) => {
+      clearLocalNotification()
+        .then(setLocalNotification())
+      navigation.navigate('Quiz', {deckTitle, continueQuiz})
+    }
   }
 }
 

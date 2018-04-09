@@ -9,16 +9,15 @@ class AddDeckForm extends Component {
 
   state = {
     name: '',
-    noName: false,
-    existingName: false
+    error: 0, //0 = no errors, 1 = no name, 2 = existing name
   }
 
   handleChange(text) {
     const { decks } = this.props
-    if(this.state.noName){
-      this.setState({name: text, noName: false});
-    } else if(this.state.existingName && !decks.hasOwnProperty(text)) {
-      this.setState({name: text, existingName: false})
+    if(this.state.error === 1){
+      this.setState({name: text, error: 0});
+    } else if(this.state.error === 2 && !decks.hasOwnProperty(text)) {
+      this.setState({name: text, error: 0})
     }else {
       this.setState({
         name: text
@@ -40,15 +39,15 @@ class AddDeckForm extends Component {
             this.props.goBack()
           })
       } else {
-        this.setState({existingName: true})
+        this.setState({error: 2})
       }
     } else {
-      this.setState({noName: true})
+      this.setState({error: 1})
     }
   }
 
   render(){
-    const { name, existingName, noName } = this.state
+    const { name, error } = this.state
     return (
       <KeyboardAvoidingView behavior="padding" style={CommonStyles.container}>
         <Text style={CommonStyles.title}>What is the title of the new deck?</Text>
@@ -65,8 +64,8 @@ class AddDeckForm extends Component {
         >
           <Text style={CommonStyles.submitLabel}>Submit</Text>
         </TouchableOpacity>
-        {existingName && <Text style={CommonStyles.errorMessage}>There's already a deck with this name, please try another one</Text>}
-        {noName && <Text style={CommonStyles.errorMessage}>Please type a name for the deck</Text>}
+        {error === 2 && <Text style={CommonStyles.errorMessage}>There's already a deck with this name, please try another one</Text>}
+        {error === 1 && <Text style={CommonStyles.errorMessage}>Please type a name for the deck</Text>}
       </KeyboardAvoidingView>
     )
   }
